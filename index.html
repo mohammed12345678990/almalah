@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هارفست للقدرات</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* منع ظهور شريط التمرير */
+            background: linear-gradient(135deg, #ff6e7f, #bfe9ff);
+            color: #ffffff;
+        }
+        section {
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        #home {
+            display: flex;
+        }
+        h1 {
+            font-size: 3.5em;
+            animation: bounce 1.5s infinite;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+        input {
+            width: 220px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        input:focus {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        button {
+            background-color: #ff4757;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff6b81;
+        }
+        .equation {
+            font-size: 2em;
+            position: absolute;
+            color: #ffffff;
+            animation: move 5s infinite;
+        }
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(calc(100vw - 100px), calc(100vh - 100px)); }
+        }
+        .user-icon {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px; /* شكل مربع مع زوايا مدورة */
+            padding: 20px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #333;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .user-icon:hover {
+            transform: scale(1.1); /* تكبير الأيقونة عند التحويم */
+        }
+        .home-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #218838;
+        }
+        /* تصميم النافذة المنبثقة */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .popup button {
+            background-color: #ff4757;
+            color: white;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="home">
+        <h1>هارفست للقدرات</h1>
+        <div id="equations"></div>
+        <p>ستنتقل إلى صفحة تسجيل الدخول بعد 5 ثوانٍ...</p>
+    </section>
+
+    <section id="login">
+        <h1>تسجيل الدخول</h1>
+        <form onsubmit="return handleLogin(event)">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+    </section>
+
+    <section id="welcome">
+        <h1>أهلا بك في منصة هارفست للقدرات</h1>
+        <p>نتمنى لك تجربة تعليمية مثمرة!</p>
+        <button class="home-button" onclick="goToHome()"><a href="HOME.html">زياره الموقع 
+        </a></button>
+    </section>
+
+    <!-- نافذة منبثقة لعرض المعلومات -->
+    <div class="popup" id="userPopup">
+        <h2>معلومات المستخدم</h2>
+        <p id="userInfo"></p>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+
+    <script>
+        const equations = [
+            'E = mc²',
+            'a² + b² = c²',
+            'F = ma',
+            'x² + y² = r²',
+            'PV = nRT',
+            'a + b = c',
+            'd = vt',
+            '1 + 1 = 2'
+        ];
+
+        function createEquation() {
+            const equationDiv = document.createElement('div');
+            equationDiv.classList.add('equation');
+            equationDiv.innerText = equations[Math.floor(Math.random() * equations.length)];
+            equationDiv.style.top = Math.random() * 100 + 'vh';
+            equationDiv.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(equationDiv);
+            setTimeout(() => equationDiv.remove(), 5000);
+        }
+
+        setInterval(createEquation, 1000);
+
+        // عرض الصفحة الرئيسية
+        setTimeout(() => {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('login').style.display = 'flex';
+        }, 5000);
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+
+            // إضافة أيقونة المستخدم
+            const userIcon = document.createElement('div');
+            userIcon.classList.add('user-icon');
+            userIcon.innerText = username;
+            userIcon.onclick = () => showUserInfo(username); // إضافة حدث النقر
+            document.getElementById('home').appendChild(userIcon);
+
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('welcome').style.display = 'flex';
+        }
+
+        function goToHome() {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('home').style.display = 'flex';
+        }
+
+        function showUserInfo(username) {
+            // هنا يمكنك تخصيص المعلومات التي تريد عرضها
+            const userInfo = `اسم المستخدم: ${username}\nمرحبا بك في هارفست للقدرات!`;
+            document.getElementById('userInfo').innerText = userInfo;
+            document.getElementById('userPopup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('userPopup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

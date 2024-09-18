@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال كلمة المرور</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff6e7f, #bfe9ff);
+            color: #ffffff;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        input[type="password"] {
+            font-size: 1.5em;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            background: #fff;
+            color: #333;
+        }
+        .link-button {
+            display: inline-block;
+            background-color: #ff4757;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+        .link-button:hover {
+            background-color: #ff6b81;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>أدخل كلمة المرور</h1>
+        <input type="password" id="pinInput" maxlength="14" placeholder="كلمة المرور" />
+        <a href="ابدا الان.html" class="link-button" onclick="submitPin()">إرسال</a>
+    </div>
+
+    <script>
+        function submitPin() {
+            const pinInput = document.getElementById('pinInput').value;
+            const correctPin = "HARVEST12349874";
+            if (pinInput === correctPin) {
+                alert("تم إدخال كلمة المرور بنجاح!");
+            } else {
+                alert("كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.");
+            }
+        }
+    </script>
+
+</body>
+</html>
